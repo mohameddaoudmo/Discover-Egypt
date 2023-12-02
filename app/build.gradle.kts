@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-}
+    id("com.google.gms.google-services")}
 
 android {
     namespace = "com.example.discoveregypt"
@@ -67,6 +67,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     val nav_version = "2.7.5"
-
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("androidx.navigation:navigation-compose:$nav_version")
 }

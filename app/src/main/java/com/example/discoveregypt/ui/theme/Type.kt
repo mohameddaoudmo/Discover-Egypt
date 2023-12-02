@@ -42,3 +42,7 @@ val firaSansFamily = FontFamily(
     Font(R.font.quimeduim, FontWeight.Medium),
     Font(R.font.quibold, FontWeight.Bold)
 )
+val notosan = FontFamily(
+    Font(R.font.notosanspahawhhmongregular, FontWeight.Light),
+
+)

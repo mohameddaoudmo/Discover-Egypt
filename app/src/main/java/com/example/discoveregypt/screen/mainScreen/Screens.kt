@@ -31,11 +31,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.discoveregypt.ui.theme.Gray
+import com.example.discoveregypt.ui.theme.firaSansFamily
 import com.example.discoveregypt.ui.theme.screenmain
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,7 +58,15 @@ fun HomeScreen(navController: NavHostController) {
             Header()
             IngredientsHeader()
             categories()
-
+            Text(
+                text = "City",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = firaSansFamily,
+                color = White,
+                modifier = Modifier.padding(top = 24.dp, start = 12.dp, bottom = 24.dp)
+            )
+            Cites()
         }
 
     }

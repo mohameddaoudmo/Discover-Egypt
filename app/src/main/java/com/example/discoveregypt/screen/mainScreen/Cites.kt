@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,9 +26,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,28 +35,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.discoveregypt.R
 import com.example.discoveregypt.ui.theme.Gold
-import com.example.discoveregypt.ui.theme.YellowButton
 import com.example.discoveregypt.ui.theme.firaSansFamily
-import com.example.discoveregypt.ui.theme.notosan
 
-data class Places(val name: String, val city: String, val photo: Int?)
+data class Cites(val name: String, val photo: Int?)
 
-val popularplaces = listOf<Places>(
-    Places(name = "Vallay of Kings", city = "Luxor", photo = R.drawable.tempeldandara,),
-        Places(name = "Vallay of Kings", city = "Luxor", photo = R.drawable.camal,)
+val cites = listOf<Cites>(
+    Cites(name = "Cario", photo = R.drawable.tempeldandara,),
+    Cites(name = "Giza", photo = R.drawable.camal,)
 )
 
 @Composable
-fun categories() {
+fun Cites() {
     LazyRow(
         contentPadding = PaddingValues(horizontal = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        items(popularplaces) {
-            Cardcategories(city = it.name, place = it.city, modifier = Modifier
+        items(cites) {
+            CardCites(city =it.name , modifier = Modifier
                 .fillMaxSize()
-                .width(250.dp)
-                .height(230.dp)
+                .width(220.dp)
+                .height(270.dp)
                 .shadow(10.dp, RoundedCornerShape(4.dp))
                 .clip(RoundedCornerShape(6.dp)))
         }
@@ -68,7 +62,7 @@ fun categories() {
 }
 
 @Composable
-fun Cardcategories(modifier: Modifier= Modifier, place: String,city :String) {
+fun CardCites(modifier: Modifier = Modifier, city :String) {
 
     Card(
         modifier = modifier
@@ -82,11 +76,11 @@ fun Cardcategories(modifier: Modifier= Modifier, place: String,city :String) {
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.ramasis),
+                painter = painterResource(id = R.drawable.pytmaids),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )
-            description(modifier = Modifier.align(Alignment.BottomCenter),place,city)
+            descriptionCitesCard(modifier = Modifier.align(Alignment.BottomCenter),city)
 
 
         }
@@ -94,7 +88,7 @@ fun Cardcategories(modifier: Modifier= Modifier, place: String,city :String) {
 }
 
 @Composable
-fun description(modifier: Modifier = Modifier, place: String,city :String) {
+fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -103,7 +97,7 @@ fun description(modifier: Modifier = Modifier, place: String,city :String) {
                     listOf(
                         Color(0x12FFFFFF), Color(0xDFFFFFF), Color(0x9FFFFFFF)
 
-                    ), radius = 900f, center = Offset.Infinite
+                    ), radius = 300f, center = Offset.Infinite
                 )
             )
 
@@ -112,15 +106,15 @@ fun description(modifier: Modifier = Modifier, place: String,city :String) {
         Column {
             Text(
                 text = city,
-                color = YellowButton,
+                color = Gold,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = notosan, fontStyle = FontStyle.Normal
+                fontFamily = firaSansFamily, fontStyle = FontStyle.Normal
             )
             Row() {
                 Text(
-                    text = place,
-                    color = YellowButton,
+                    text = "",
+                    color = Gold,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = firaSansFamily
@@ -133,7 +127,7 @@ fun description(modifier: Modifier = Modifier, place: String,city :String) {
 
 @Preview(showBackground = true, wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE)
 @Composable
-fun Cardpreview() {
+fun CitesCardpreview() {
     // Preview your composable function here
     categories()
 }

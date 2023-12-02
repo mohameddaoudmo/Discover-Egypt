@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,12 +41,12 @@ import com.example.discoveregypt.ui.theme.firaSansFamily
 data class CatergroisRow(val name: String, val id: Int)
 
 val list = listOf<CatergroisRow>(
-    CatergroisRow("Pyramdis", R.drawable.pyramid),
-    CatergroisRow("Popular", R.drawable.pyramid),
-    CatergroisRow("Beach", R.drawable.pyramid),
-    CatergroisRow("Temple", R.drawable.pyramid),
-    CatergroisRow("Resort", R.drawable.pyramid),
-    CatergroisRow("Pyramdis", R.drawable.pyramid),
+    CatergroisRow("Pyramdis", R.drawable.pyramids),
+    CatergroisRow("Popular", R.drawable.trend),
+    CatergroisRow("Beach", R.drawable.beach),
+    CatergroisRow("Temple", R.drawable.temple),
+    CatergroisRow("Resort", R.drawable.resort),
+
 
 
     )
@@ -87,7 +88,7 @@ fun TabButton(
     onClick: () -> Unit
 ) {
 
-    Button(
+    ElevatedButton(
 
         onClick = onClick,
         shape = RoundedCornerShape(5.dp),
