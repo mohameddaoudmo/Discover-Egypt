@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.discoveregypt.screen.mainScreen.HomeScreen
 import com.example.discoveregypt.ui.theme.DiscoverEgyptTheme
+import com.example.discoveregypt.ui.theme.buttongrey
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +24,7 @@ class MainActivity : ComponentActivity() {
             statusBarStyle = SystemBarStyle.light(
                 Color.TRANSPARENT,
                 Color.TRANSPARENT
-            ), navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+            ), navigationBarStyle = SystemBarStyle.light(Color.LTGRAY, Color.LTGRAY)
         )
         super.onCreate(savedInstanceState)
         setContent {
@@ -34,7 +36,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
 
-                    AppRoute.GenerateRoute(navController = navController)
+//                    AppRoute.GenerateRoute(navController = navController)
+                    HomeScreen(navController)
                 }
             }
         }

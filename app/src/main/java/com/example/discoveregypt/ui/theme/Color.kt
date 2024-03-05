@@ -15,6 +15,7 @@ val screenmain = Color(0xFF23211e)
 val YellowButton = Color(222,154,30)
 val buttongrey = Color(239,239,239)
 val textYellow = Color(255,148,0)
+val Juicy = Color(0xFFFFBE0B)
 
 //val ColorProtection  = Color(255F, 255F, 255F, 0.3F)
 val Gold = Color (222,124,30)

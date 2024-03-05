@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
@@ -52,7 +51,7 @@ val list = listOf<CatergroisRow>(
     )
 
 @Composable
-fun IngredientsHeader() {
+fun Type() {
     var currentSelectedIndex by remember {
         mutableStateOf(-1)
     }

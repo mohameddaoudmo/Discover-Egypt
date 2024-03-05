@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +25,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,11 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.discoveregypt.R
 import com.example.discoveregypt.ui.theme.Gray
 import com.example.discoveregypt.ui.theme.Yellow
@@ -46,28 +51,40 @@ import com.example.discoveregypt.ui.theme.firaSansFamily
 import com.example.discoveregypt.ui.theme.screenmain
 import com.example.discoveregypt.ui.theme.textYellow
 import kotlinx.coroutines.delay
+import kotlin.math.max
+import kotlin.math.min
 
-data class HeaderData(val Image: Int, val title: String)
+data class HeaderData(val Image: String, val title: String)
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun Header() {
+fun Header(scrollState: ScrollState
+) {
     var page by remember {
         mutableStateOf(0)
     }
-    val banners = listOf(
-        HeaderData(R.drawable.ramasis, "Ramsis"),
-        HeaderData(R.drawable.tempeldandara, "Dendera "),
-        HeaderData(
-            R.drawable.pytmaids, "Great Pyramid of Giza"
+    val bannersState = remember {
+        mutableStateListOf(
+            HeaderData(
+                "https://images.pexels.com/photos/262780/pexels-photo-262780.jpeg",
+                "sphinx"
+            ),
+            HeaderData(
+                "https://images.pexels.com/photos/1755390/pexels-photo-1755390.jpeg",
+                "Nile "
+            ),
+            HeaderData(
+                "https://cdn.britannica.com/47/194547-050-52813FB0/aerial-view-Cairo-Egypt.jpg",
+                "Great Pyramid of Giza"
+            )
+
+
         )
-
-
-    )
+    }
     var bannerIndex by remember { mutableStateOf(0) }
 
     val pagerState = rememberPagerState(pageCount = {
-        banners.size
+        bannersState.size
     })
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
@@ -79,9 +96,10 @@ fun Header() {
     LaunchedEffect(Unit) {
         while (true) {
             delay(10_000)
-            tween<Float>(1500)
+
             pagerState.animateScrollToPage(
-                page = (pagerState.currentPage + 1) % pagerState.pageCount
+                page = (pagerState.currentPage + 1) % pagerState.pageCount,
+                animationSpec = tween(durationMillis = 1500)
             )
         }
     }
@@ -96,10 +114,22 @@ fun Header() {
 
             }
             Box(modifier = Modifier.fillMaxSize()) {
-                Image(
-                    painter = painterResource(id = banners[it].Image),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop
+                val height = 400.dp
+
+                AsyncImage(
+                    model = bannersState[it].Image,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize().graphicsLayer {
+                        alpha = min(
+                            1f,
+                            max(
+                                0.0f,
+                                1 - (scrollState.value / ((height.value * 2) + (height.value / 1.5f)))
+                            )
+                        )
+                    },
+
+                    contentDescription = null,
                 )
                 Box(
                     modifier = Modifier
@@ -116,10 +146,13 @@ fun Header() {
                         )
 
                 )
+                LazyLazyGrid@
                 AnimatedContent(
-                    modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 10.dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 10.dp),
 
-                    targetState = banners, transitionSpec = {
+                    targetState = bannersState, transitionSpec = {
                         fadeIn(animationSpec = tween(durationMillis = 500)) with fadeOut(
                             animationSpec = tween(
                                 durationMillis = 500
@@ -147,7 +180,7 @@ fun Header() {
                 .align(Alignment.CenterEnd)
                 .padding(top = 100.dp)
         ) {
-            repeat(banners.size) { index ->
+            repeat(bannersState.size) { index ->
                 val width = 12.dp
                 val height = if (index == bannerIndex) 28.dp else 12.dp
                 val color = if (index == bannerIndex) Yellow else Gray
@@ -163,7 +196,7 @@ fun Header() {
         }
 
 
-        TapRow()
+
         textfieldPart({})
 
         Spacer(modifier = Modifier.height(height = 12.dp))
@@ -172,5 +205,3 @@ fun Header() {
     }
 
 }
-
-

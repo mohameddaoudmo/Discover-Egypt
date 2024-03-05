@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DiscoverEgypt</string>
+    <string name="main">main</string>
+    <string name="Favourite">favourite</string>
+
+
 </resources>

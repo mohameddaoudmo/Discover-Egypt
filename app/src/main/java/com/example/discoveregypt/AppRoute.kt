@@ -12,9 +12,9 @@ object AppRoute {
     fun GenerateRoute(navController: NavHostController) {
         NavHost(
             navController = navController,
-            startDestination = AppRouteName.Home,
+            startDestination = Screen.Main.route,
         ) {
-            composable(AppRouteName.Home) {
+            composable(Screen.Main.route) {
                 HomeScreen(navController = navController)
             }
 

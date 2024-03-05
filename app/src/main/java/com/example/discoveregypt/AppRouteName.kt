@@ -1,7 +1,8 @@
 package com.example.discoveregypt
 
-object AppRouteName {
-    const val Home = "/home"
-    const val Detail = "/detail"
-    const val SeatSelector = "/seat-selector"
+import androidx.annotation.StringRes
+
+sealed class Screen(val route: String, @StringRes val resourceId: Int) {
+    object Main : Screen("Main/", R.string.main)
+    object Favourite : Screen("Favourite/", R.string.Favourite)
 }

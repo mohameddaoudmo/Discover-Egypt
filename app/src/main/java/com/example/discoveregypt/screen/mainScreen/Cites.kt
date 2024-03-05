@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.discoveregypt.R
 import com.example.discoveregypt.ui.theme.Gold
 import com.example.discoveregypt.ui.theme.firaSansFamily
@@ -75,10 +76,12 @@ fun CardCites(modifier: Modifier = Modifier, city :String) {
 
         ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.pytmaids),
+            AsyncImage(
+                model = "https://d3rr2gvhjw0wwy.cloudfront.net/uploads/mandators/49581/file-manager/cairo-city-egypt-2020.jpg",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+
                 contentDescription = null,
-                contentScale = ContentScale.Crop
             )
             descriptionCitesCard(modifier = Modifier.align(Alignment.BottomCenter),city)
 
@@ -89,7 +92,9 @@ fun CardCites(modifier: Modifier = Modifier, city :String) {
 
 @Composable
 fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
+
     Box(
+
         modifier = modifier
             .fillMaxWidth()
             .background(
