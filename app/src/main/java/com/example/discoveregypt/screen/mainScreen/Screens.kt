@@ -59,6 +59,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.discoveregypt.Screen
+import com.example.discoveregypt.screen.BottomNavigationAnimation
 import com.example.discoveregypt.ui.theme.Gray
 import com.example.discoveregypt.ui.theme.Juicy
 import com.example.discoveregypt.ui.theme.firaSansFamily
@@ -75,7 +76,16 @@ fun HomeScreen(navController: NavHostController) {
 
     Scaffold(
 
-        topBar = { TapRow() }, bottomBar = { MainBottom(navController) }) {
+        topBar = { TapRow() }, bottomBar = {
+            BottomNavigationAnimation(
+            navController = navController,
+            listOf(
+                com.example.discoveregypt.screen.Screen.Home,
+                com.example.discoveregypt.screen.Screen.Create,
+
+                )
+        )
+        }) {
         NavHost(
             navController, startDestination = Screen.Main.route,
         ) {
@@ -191,6 +201,7 @@ fun MainScreen( scrollState: ScrollState) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun textfieldPart(onValueChange: () -> Unit) {
     Box(
