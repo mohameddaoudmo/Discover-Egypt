@@ -33,7 +33,7 @@ import com.example.discoveregypt.ui.theme.White
 import com.example.discoveregypt.ui.theme.firaSansFamily
 
 @Composable
-fun TapRow(
+fun TapRow(ondrawerClick :()->Unit
 ) {
     Row(
         Modifier
@@ -44,7 +44,7 @@ fun TapRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {},
+            onClick = ondrawerClick,
         ) {
             Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu", tint = Color.White)
         }
@@ -68,6 +68,25 @@ fun TapRow(
     }
 }
 
+@Composable
+fun AppBar(
+) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(150.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp),
+
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(
+            onClick = {},
+        ) {
+            Icon(imageVector = Icons.Filled.Menu, contentDescription = "Menu", tint = Color.White)
+        }
+
+    }
+}
 //@Preview(wallpaper = Wallpapers.BLUE_DOMINATED_EXAMPLE)
 //@Composable
 //fun MyComposablePreview() {

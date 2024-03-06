@@ -15,7 +15,7 @@ object AppRoute {
             startDestination = Screen.Main.route,
         ) {
             composable(Screen.Main.route) {
-                HomeScreen(navController = navController)
+
             }
 
         }

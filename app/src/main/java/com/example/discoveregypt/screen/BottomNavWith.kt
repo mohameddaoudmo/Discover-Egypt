@@ -69,9 +69,11 @@ fun BottomNavigationAnimation(
     Box(
         modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
             .shadow(5.dp)
-            .background(buttongrey)
+            .background(buttongrey, shape = RoundedCornerShape(12.dp))
             .height(64.dp)
             .fillMaxWidth()
+
+
 
     ) {
         Row(
@@ -168,7 +170,7 @@ fun BottomNavItem(
         Row(
             modifier = Modifier
                 .height(animateHeight)
-                .width(120.dp)
+                .width(180.dp)
                 .shadow(
                     elevation = animatedElevation,
                     shape = RoundedCornerShape(20.dp)
@@ -198,7 +200,7 @@ fun BottomNavItem(
                 Text(
                     text = screen.title,
                     fontFamily = firaSansFamily, fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(start = 8.dp, end = 10.dp),
+                    modifier = Modifier.padding(start = 12.dp, end = 10.dp),
                     maxLines = 1
                 )
             }

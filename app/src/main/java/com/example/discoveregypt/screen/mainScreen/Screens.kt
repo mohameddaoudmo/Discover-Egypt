@@ -70,13 +70,13 @@ import com.juraj.fluid.MainBottom
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController, ondrawerClick :()->Unit) {
     val scrollState = rememberScrollState()
 
 
     Scaffold(
 
-        topBar = { TapRow() }, bottomBar = {
+        topBar = { TapRow(ondrawerClick) }, bottomBar = {
             BottomNavigationAnimation(
             navController = navController,
             listOf(
@@ -139,6 +139,7 @@ fun Favourite(){
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen( scrollState: ScrollState) {
     Column(
