@@ -76,7 +76,7 @@ fun HomeScreen(navController: NavHostController, ondrawerClick :()->Unit) {
 
     Scaffold(
 
-        topBar = { TapRow(ondrawerClick) }, bottomBar = {
+        topBar = {  }, bottomBar = {
             BottomNavigationAnimation(
             navController = navController,
             listOf(
@@ -108,7 +108,7 @@ fun HomeScreen(navController: NavHostController, ondrawerClick :()->Unit) {
                     animationSpec = tween(300, easing = EaseOut),
                     towards = AnimatedContentTransitionScope.SlideDirection.End
                 )
-            }) { MainScreen(scrollState) }
+            }) { MainScreen(scrollState, ondrawerClick) }
             composable(Screen.Favourite.route, enterTransition = {
                 fadeIn(
                     animationSpec = tween(
@@ -141,7 +141,7 @@ fun Favourite(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen( scrollState: ScrollState) {
+fun MainScreen( scrollState: ScrollState , ondrawerClick :()->Unit) {
     Column(
 
         Modifier
@@ -151,7 +151,7 @@ fun MainScreen( scrollState: ScrollState) {
 
 
     ) {
-        Header(scrollState)
+        Header(scrollState, ondrawerClick)
         Type()
         categories()
         Text(

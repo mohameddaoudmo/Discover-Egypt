@@ -147,22 +147,22 @@ fun MainScreen(
         contentAlignment = Alignment.BottomCenter
     ) {
         CustomBottomNavigation(navController1)
-        Circle(
-            color = Color.DarkGray,
-//            color = MaterialTheme.colors.primary.copy(alpha = 0.5f),
-            animationProgress = 0.5f
-        )
-
-        FabGroup(renderEffect = renderEffect, animationProgress = fabAnimationProgress)
-        FabGroup(
-            renderEffect = null,
-            animationProgress = fabAnimationProgress,
-            toggleAnimation = toggleAnimation
-        )
-        Circle(
-            color = Color.White,
-            animationProgress = clickAnimationProgress
-        )
+//        Circle(
+//            color = Color.DarkGray,
+////            color = MaterialTheme.colors.primary.copy(alpha = 0.5f),
+//            animationProgress = 0.5f
+//        )
+//
+//        FabGroup(renderEffect = renderEffect, animationProgress = fabAnimationProgress)
+//        FabGroup(
+//            renderEffect = null,
+//            animationProgress = fabAnimationProgress,
+//            toggleAnimation = toggleAnimation
+//        )
+//        Circle(
+//            color = Color.White,
+//            animationProgress = clickAnimationProgress
+//        )
     }
 }
 

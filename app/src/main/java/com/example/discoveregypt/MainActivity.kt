@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.discoveregypt.screen.HomeScreenDrawer
+import com.example.discoveregypt.screen.MainDrawer
 import com.example.discoveregypt.screen.mainScreen.HomeScreen
 import com.example.discoveregypt.ui.theme.DiscoverEgyptTheme
 import com.example.discoveregypt.ui.theme.buttongrey
@@ -41,7 +42,8 @@ class MainActivity : ComponentActivity() {
 //                    AppRoute.GenerateRoute(navController = navController)
                     val scrollState = rememberScrollState()
 
-                    HomeScreenDrawer(scrollState,navController)
+                    MainDrawer(scrollState, navController)
+
 
                 }
             }

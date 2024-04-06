@@ -32,13 +32,16 @@ import androidx.compose.ui.unit.dp
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Create
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,12 +53,12 @@ import com.example.discoveregypt.ui.theme.firaSansFamily
 
 sealed class Screen(
     val title: String,
-    val activeIcon: Int,
-    val inactiveIcon: Int
+    val activeIcon: ImageVector,
+    val inactiveIcon: ImageVector
     ,val route: String
 ) {
-    object Home : Screen("Home", R.drawable.egypt3 , R.drawable.egypt3,"Main/")
-    object Create : Screen("Favourite", R.drawable.egypt1, R.drawable.egypt1,"Favourite/")
+    object Home : Screen("Home", Icons.Outlined.Home , Icons.Filled.Home,"Main/")
+    object Create : Screen("Favourite", Icons.Outlined.Favorite, Icons.Filled.Favorite,"Favourite/")
 
 }
 
@@ -69,7 +72,7 @@ fun BottomNavigationAnimation(
     Box(
         modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
             .shadow(5.dp)
-            .background(buttongrey, shape = RoundedCornerShape(12.dp))
+            .background(buttongrey)
             .height(64.dp)
             .fillMaxWidth()
 
@@ -119,8 +122,8 @@ fun BottomNavigationAnimation(
 fun FlipIcon(
     modifier: Modifier = Modifier,
     isActive: Boolean,
-    activeIcon: Int,
-    inactiveIcon: Int,
+    activeIcon: ImageVector,
+    inactiveIcon: ImageVector,
     contentDescription: String
 ) {
     val animationRotation by animateFloatAsState(
@@ -136,9 +139,9 @@ fun FlipIcon(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter =painterResource(id = if (animationRotation > 90f) activeIcon else inactiveIcon),
-            contentDescription = contentDescription
-        )
+          imageVector =   if (animationRotation > 90f) activeIcon else inactiveIcon,
+            contentDescription = contentDescription,
+            modifier = modifier)
     }
 }
 

@@ -52,7 +52,8 @@ android {
 }
 
 dependencies {
-
+    implementation ("com.google.android.exoplayer:exoplayer-core:2.17.1")
+    implementation ("com.google.android.exoplayer:exoplayer-ui:2.17.1")
     //navigationbar
     implementation("com.exyte:animated-navigation-bar:1.0.0")
 

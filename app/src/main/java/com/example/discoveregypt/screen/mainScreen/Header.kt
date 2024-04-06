@@ -58,7 +58,7 @@ data class HeaderData(val Image: String, val title: String)
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun Header(scrollState: ScrollState
+fun Header(scrollState: ScrollState ,ondrawerClick :()->Unit
 ) {
     var page by remember {
         mutableStateOf(0)
@@ -198,7 +198,7 @@ fun Header(scrollState: ScrollState
 
 
         textfieldPart({})
-
+        TapRow(ondrawerClick)
         Spacer(modifier = Modifier.height(height = 12.dp))
 
 

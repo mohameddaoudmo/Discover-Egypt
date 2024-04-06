@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Leaderboard
@@ -29,10 +28,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -44,12 +41,104 @@ import com.example.discoveregypt.R
 import com.example.discoveregypt.screen.mainScreen.HomeScreen
 import com.example.discoveregypt.screen.mainScreen.MainScreen
 import kotlinx.coroutines.launch
+import android.content.Context
+import android.net.Uri
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusOrder
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+import com.google.android.exoplayer2.ui.StyledPlayerView
+
 
 @Composable
-fun HomeScreenDrawer(scrollState: ScrollState,navController: NavHostController) {
+fun MainDrawer(scrollState: ScrollState,navController: NavHostController){
+    val context =LocalContext.current
+    HomeScreenDrawer(context.getVideoUri(),scrollState, navController)
+
+}
+private fun Context.getVideoUri(): Uri {
+    val rawId = resources.getIdentifier("egypt", "raw", packageName)
+    val videoUri = "android.resource://$packageName/$rawId"
+    return Uri.parse(videoUri)
+}
+
+
+
+
+private fun Context.buildExoPlayer(uri: Uri) =
+    ExoPlayer.Builder(this).build().apply {
+        setMediaItem(MediaItem.fromUri(uri))
+        repeatMode = Player.REPEAT_MODE_ALL
+        playWhenReady = true
+        prepare()
+    }
+
+private fun Context.buildPlayerView(exoPlayer: ExoPlayer) =
+    StyledPlayerView(this).apply {
+        player = exoPlayer
+        layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        useController = false
+        resizeMode = RESIZE_MODE_ZOOM
+    }
+
+
+@Composable
+fun DrawerMain(videoUri: Uri,scrollState: ScrollState,navController: NavHostController) {
+    val context = LocalContext.current
+
+    val exoPlayer = remember { context.buildExoPlayer(videoUri) }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+@Composable
+fun HomeScreenDrawer(videoUri: Uri,scrollState: ScrollState,navController: NavHostController) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
+        val context = LocalContext.current
+
+        val exoPlayer = remember { context.buildExoPlayer(videoUri) }
         var drawerState by remember {
             mutableStateOf(DrawerState.Closed)
         }
@@ -82,13 +171,25 @@ fun HomeScreenDrawer(scrollState: ScrollState,navController: NavHostController) 
                 }
             }
         }
-
-        HomeScreenDrawerContents(
-            selectedScreen = screenState,
-            onScreenSelected = { screen ->
-                screenState = screen
+        DisposableEffect(
+            AndroidView(
+                factory = { it.buildPlayerView(exoPlayer) },
+                modifier = Modifier.fillMaxSize()
+            )
+        ) {
+            onDispose {
+                exoPlayer.release()
             }
-        )
+        }
+
+        ProvideWindowInsets {
+            HomeScreenDrawerContents(
+                selectedScreen = screenState,
+                onScreenSelected = { screen ->
+                    screenState = screen
+                }
+            )        }
+
 
         val draggableState = rememberDraggableState(onDelta = { dragAmount ->
             coroutineScope.launch {
@@ -171,6 +272,7 @@ private fun ScreenContents(
             ScreenDrawer.Home ->
                 HomeScreen(navController ,onDrawerClicked)
 
+
             ScreenDrawer.News ->
                 Surface(
                     modifier = Modifier.fillMaxSize()
@@ -204,11 +306,16 @@ private fun HomeScreenDrawerContents(
     Column(
         modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .background(color = Color.Transparent),
         verticalArrangement = Arrangement.Center
     ) {
         ScreenDrawer.values().forEach {
+
             NavigationDrawerItem(
+                modifier=Modifier.border(BorderStroke(1.dp, color = Color.Black),
+                  shape =   RoundedCornerShape(12.dp)
+                ).padding(8.dp),
                 label = {
                     Text(it.text)
                 },
@@ -216,12 +323,14 @@ private fun HomeScreenDrawerContents(
                     Icon(painter = painterResource(id =it.icon ) , contentDescription = it.text)
                 },
                 colors =
-                NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.White),
+                NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent, selectedContainerColor =Color.Transparent ),
                 selected = selectedScreen == it,
                 onClick = {
                     onScreenSelected(it)
                 },
             )
+            Spacer(modifier = Modifier.height(12.dp))
+
         }
     }
 }
