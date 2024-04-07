@@ -55,6 +55,7 @@ import com.example.discoveregypt.ui.theme.Juicy
 import com.example.discoveregypt.ui.theme.YellowButton
 import com.example.discoveregypt.ui.theme.firaSansFamily
 import com.example.discoveregypt.ui.theme.notosan
+import com.example.discoveregypt.ui.theme.textYellow
 
 data class Places(val name: String, val city: String, val photo: Int?)
 
@@ -260,8 +261,10 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
             .fillMaxWidth()
             .background(
                 Brush.radialGradient(
-                    colors = listOf(Color.White, Color.White.copy(alpha = 0.0f)),
-                    radius = 200f
+                    listOf(
+                        Color(0x9FFFFFFF), Color(0x9FFFFFFF), Color(0x9FFFFFFF)
+
+                    ), radius = 100f, center = Offset.Infinite
                 )
             )
 
@@ -270,7 +273,7 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
         Column {
             Text(
                 text = city,
-                color = Color.DarkGray,
+                color = textYellow,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = notosan, fontStyle = FontStyle.Normal
@@ -278,7 +281,7 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
             Row() {
                 Text(
                     text = place,
-                    color = Color.DarkGray,
+                    color = textYellow,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = firaSansFamily

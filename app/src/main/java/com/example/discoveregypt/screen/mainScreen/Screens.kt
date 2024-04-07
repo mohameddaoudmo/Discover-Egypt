@@ -57,6 +57,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Cyan
+import androidx.compose.ui.graphics.Color.Companion.LightGray
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -85,9 +86,8 @@ import com.juraj.fluid.MainBottom
 @Composable
 fun HomeScreen(navController: NavHostController, ondrawerClick: () -> Unit) {
     val scrollState = rememberScrollState()
-    val content = remember { mutableStateOf("Home Screen") }
+
     val selectedItem = remember { mutableStateOf("home") }
-    val openDialog = remember { mutableStateOf(false) }
 
     androidx.compose.material.Scaffold(
 
@@ -95,7 +95,7 @@ fun HomeScreen(navController: NavHostController, ondrawerClick: () -> Unit) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    openDialog.value = true
+
                 }, shape = RoundedCornerShape(50), backgroundColor = YellowButton
             ) {
                 androidx.compose.material.Icon(
@@ -109,10 +109,10 @@ fun HomeScreen(navController: NavHostController, ondrawerClick: () -> Unit) {
         floatingActionButtonPosition = FabPosition.Center,
         bottomBar = {
             BottomAppBar(
-                backgroundColor = buttongrey,
+                backgroundColor = LightGray,
                 cutoutShape = RoundedCornerShape(50),
                 content = {
-                    BottomNavigation(backgroundColor = buttongrey) {
+                    BottomNavigation(backgroundColor = LightGray) {
                         BottomNavigationItem(selected = selectedItem.value == "home",
                             onClick = {
                                 navController.navigate(Screen.Main.route)

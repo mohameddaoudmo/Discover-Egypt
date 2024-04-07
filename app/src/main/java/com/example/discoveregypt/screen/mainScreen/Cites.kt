@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import com.example.discoveregypt.R
 import com.example.discoveregypt.ui.theme.Gold
 import com.example.discoveregypt.ui.theme.firaSansFamily
+import com.example.discoveregypt.ui.theme.textYellow
 
 data class Cites(val name: String, val photo: Int?)
 
@@ -100,9 +101,9 @@ fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
             .background(
                 Brush.radialGradient(
                     listOf(
-                        Color(0x12FFFFFF), Color(0xDFFFFFF), Color(0x9FFFFFFF)
+                        Color(0x9FFFFFFF), Color(0x9FFFFFFF), Color(0x9FFFFFFF)
 
-                    ), radius = 300f, center = Offset.Infinite
+                    ), radius = 100f, center = Offset.Infinite
                 )
             )
 
@@ -111,7 +112,7 @@ fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
         Column {
             Text(
                 text = city,
-                color = Color.DarkGray,
+                color =textYellow,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = firaSansFamily, fontStyle = FontStyle.Normal
@@ -119,7 +120,7 @@ fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
             Row() {
                 Text(
                     text = "",
-                    color = Color.DarkGray,
+                    color = textYellow,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = firaSansFamily
