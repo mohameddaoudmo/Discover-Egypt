@@ -262,7 +262,7 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
             .background(
                 Brush.radialGradient(
                     listOf(
-                        Color(0x9FFFFFFF), Color(0x9FFFFFFF), Color(0x9FFFFFFF)
+                        Color(0x99444444), Color(0x99444444), Color(0x99444444)
 
                     ), radius = 100f, center = Offset.Infinite
                 )
