@@ -111,7 +111,7 @@ fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
         Column {
             Text(
                 text = city,
-                color = Gold,
+                color = Color.DarkGray,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = firaSansFamily, fontStyle = FontStyle.Normal
@@ -119,7 +119,7 @@ fun descriptionCitesCard(modifier: Modifier = Modifier,city :String) {
             Row() {
                 Text(
                     text = "",
-                    color = Gold,
+                    color = Color.DarkGray,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = firaSansFamily

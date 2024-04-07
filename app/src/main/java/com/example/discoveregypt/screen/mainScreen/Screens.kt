@@ -29,10 +29,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomAppBar
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
@@ -46,10 +52,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Cyan
 import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -58,10 +67,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.discoveregypt.R
 import com.example.discoveregypt.Screen
 import com.example.discoveregypt.screen.BottomNavigationAnimation
 import com.example.discoveregypt.ui.theme.Gray
 import com.example.discoveregypt.ui.theme.Juicy
+import com.example.discoveregypt.ui.theme.PurpleGrey40
+import com.example.discoveregypt.ui.theme.YellowButton
+import com.example.discoveregypt.ui.theme.buttongrey
 import com.example.discoveregypt.ui.theme.firaSansFamily
 import com.example.discoveregypt.ui.theme.screenmain
 import com.exyte.animatednavbar.animation.indendshape.Height
@@ -70,21 +83,67 @@ import com.juraj.fluid.MainBottom
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(navController: NavHostController, ondrawerClick :()->Unit) {
+fun HomeScreen(navController: NavHostController, ondrawerClick: () -> Unit) {
     val scrollState = rememberScrollState()
+    val content = remember { mutableStateOf("Home Screen") }
+    val selectedItem = remember { mutableStateOf("home") }
+    val openDialog = remember { mutableStateOf(false) }
 
+    androidx.compose.material.Scaffold(
 
-    Scaffold(
-
-        topBar = {  }, bottomBar = {
-            BottomNavigationAnimation(
-            navController = navController,
-            listOf(
-                com.example.discoveregypt.screen.Screen.Home,
-                com.example.discoveregypt.screen.Screen.Create,
-
+        topBar = {  },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    openDialog.value = true
+                }, shape = RoundedCornerShape(50), backgroundColor = YellowButton
+            ) {
+                androidx.compose.material.Icon(
+                    painter = painterResource(id = R.drawable.egypt3),
+                    tint = Color.DarkGray,
+                    contentDescription = "Add"
                 )
-        )
+            }
+        },
+        isFloatingActionButtonDocked = true,
+        floatingActionButtonPosition = FabPosition.Center,
+        bottomBar = {
+            BottomAppBar(
+                backgroundColor = buttongrey,
+                cutoutShape = RoundedCornerShape(50),
+                content = {
+                    BottomNavigation(backgroundColor = buttongrey) {
+                        BottomNavigationItem(selected = selectedItem.value == "home",
+                            onClick = {
+                                navController.navigate(Screen.Main.route)
+                                selectedItem.value = "home"
+                            },
+                            icon = {
+                                androidx.compose.material.Icon(
+                                    Icons.Filled.Home,
+                                    contentDescription = "home"
+                                )
+                            },
+                            label = { androidx.compose.material.Text(text = "Home", fontWeight = FontWeight.Medium, fontFamily = firaSansFamily) },
+                            alwaysShowLabel = false
+                        )
+
+                        BottomNavigationItem(selected = selectedItem.value == "Favorite",
+                            onClick = {
+                                selectedItem.value = "Favorite"
+                                navController.navigate(Screen.Favourite.route)
+                            },
+                            icon = {
+                                androidx.compose.material.Icon(
+                                    Icons.Filled.Favorite,
+                                    contentDescription = "setting"
+                                )
+                            },
+                            label = { androidx.compose.material.Text(text = "Favourite",  fontWeight = FontWeight.Medium,fontFamily = firaSansFamily) },
+                            alwaysShowLabel = false
+                        )
+                    }
+                })
         }) {
         NavHost(
             navController, startDestination = Screen.Main.route,
@@ -134,14 +193,14 @@ fun HomeScreen(navController: NavHostController, ondrawerClick :()->Unit) {
 }
 
 @Composable
-fun Favourite(){
-    Box(modifier = Modifier.fillMaxSize()){}
+fun Favourite() {
+    Box(modifier = Modifier.fillMaxSize()) {}
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen( scrollState: ScrollState , ondrawerClick :()->Unit) {
+fun MainScreen(scrollState: ScrollState, ondrawerClick: () -> Unit) {
     Column(
 
         Modifier
@@ -174,7 +233,8 @@ fun MainScreen( scrollState: ScrollState , ondrawerClick :()->Unit) {
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
-            TextField(value = "",
+            TextField(
+                value = "",
                 onValueChange = { onValueChange },
                 label = { Text(text = "Search", fontSize = 12.sp) },
                 singleLine = true,

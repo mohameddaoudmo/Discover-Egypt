@@ -43,6 +43,7 @@ import com.example.discoveregypt.screen.mainScreen.MainScreen
 import kotlinx.coroutines.launch
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -76,17 +77,21 @@ import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.exoplayer2.util.MimeTypes
 
 
 @Composable
-fun MainDrawer(scrollState: ScrollState,navController: NavHostController){
-    val context =LocalContext.current
-    HomeScreenDrawer(context.getVideoUri(),scrollState, navController)
+fun MainDrawer(scrollState: ScrollState, navController: NavHostController) {
+    val context = LocalContext.current
+    HomeScreenDrawer(context.getVideoUri(), scrollState, navController)
 
 }
+
 private fun Context.getVideoUri(): Uri {
     val rawId = resources.getIdentifier("egypt", "raw", packageName)
     val videoUri = "android.resource://$packageName/$rawId"
@@ -94,15 +99,16 @@ private fun Context.getVideoUri(): Uri {
 }
 
 
-
-
 private fun Context.buildExoPlayer(uri: Uri) =
-    ExoPlayer.Builder(this).build().apply {
-        setMediaItem(MediaItem.fromUri(uri))
-        repeatMode = Player.REPEAT_MODE_ALL
-        playWhenReady = true
-        prepare()
-    }
+    ExoPlayer.Builder(this).setUseLazyPreparation(true)
+        .setTrackSelector(DefaultTrackSelector(this).apply {
+            setParameters(buildUponParameters().setPreferredVideoMimeTypes(MimeTypes.VIDEO_H264))
+        }).build().apply {
+            setMediaItem(MediaItem.fromUri(uri))
+            repeatMode = Player.REPEAT_MODE_ALL
+            playWhenReady = true
+            prepare()
+        }
 
 private fun Context.buildPlayerView(exoPlayer: ExoPlayer) =
     StyledPlayerView(this).apply {
@@ -114,7 +120,7 @@ private fun Context.buildPlayerView(exoPlayer: ExoPlayer) =
 
 
 @Composable
-fun DrawerMain(videoUri: Uri,scrollState: ScrollState,navController: NavHostController) {
+fun DrawerMain(videoUri: Uri, scrollState: ScrollState, navController: NavHostController) {
     val context = LocalContext.current
 
     val exoPlayer = remember { context.buildExoPlayer(videoUri) }
@@ -123,16 +129,8 @@ fun DrawerMain(videoUri: Uri,scrollState: ScrollState,navController: NavHostCont
 }
 
 
-
-
-
-
-
-
-
-
 @Composable
-fun HomeScreenDrawer(videoUri: Uri,scrollState: ScrollState,navController: NavHostController) {
+fun HomeScreenDrawer(videoUri: Uri, scrollState: ScrollState, navController: NavHostController) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -151,7 +149,7 @@ fun HomeScreenDrawer(videoUri: Uri,scrollState: ScrollState,navController: NavHo
         }
 
         val drawerWidth = with(LocalDensity.current) {
-            DrawerWidth.toPx()
+            DrawerWidth.toPx() / 2
         }
         translationX.updateBounds(0f, drawerWidth)
 
@@ -181,26 +179,31 @@ fun HomeScreenDrawer(videoUri: Uri,scrollState: ScrollState,navController: NavHo
                 exoPlayer.release()
             }
         }
-
+        exoPlayer.addListener(object : Player.Listener {
+            override fun onPlayerError(error: PlaybackException) {
+                Log.e("ExoPlayer", "Error occurred: ${error.message}")
+            }
+        })
         ProvideWindowInsets {
             HomeScreenDrawerContents(
                 selectedScreen = screenState,
                 onScreenSelected = { screen ->
                     screenState = screen
                 }
-            )        }
+            )
+        }
 
 
         val draggableState = rememberDraggableState(onDelta = { dragAmount ->
             coroutineScope.launch {
-                translationX.snapTo(translationX.value + dragAmount)
+                translationX.snapTo(translationX.value + dragAmount - 50)
             }
         })
         val decay = rememberSplineBasedDecay<Float>()
         ScreenContents(
             selectedScreen = screenState,
             onDrawerClicked = ::toggleDrawerState,
-            scrollState= scrollState,
+            scrollState = scrollState,
             navController = navController,
             modifier = Modifier
                 .graphicsLayer {
@@ -263,14 +266,13 @@ fun HomeScreenDrawer(videoUri: Uri,scrollState: ScrollState,navController: NavHo
 private fun ScreenContents(
     selectedScreen: ScreenDrawer,
     onDrawerClicked: () -> Unit,
-    modifier: Modifier = Modifier
-    ,scrollState: ScrollState,
+    modifier: Modifier = Modifier, scrollState: ScrollState,
     navController: NavHostController
 ) {
     Box(modifier) {
         when (selectedScreen) {
             ScreenDrawer.Home ->
-                HomeScreen(navController ,onDrawerClicked)
+                HomeScreen(navController, onDrawerClicked)
 
 
             ScreenDrawer.News ->
@@ -284,7 +286,6 @@ private fun ScreenContents(
                     modifier = Modifier.fillMaxSize()
                 ) {
                 }
-
 
 
             else -> {}
@@ -313,17 +314,23 @@ private fun HomeScreenDrawerContents(
         ScreenDrawer.values().forEach {
 
             NavigationDrawerItem(
-                modifier=Modifier.border(BorderStroke(1.dp, color = Color.Black),
-                  shape =   RoundedCornerShape(12.dp)
-                ).padding(8.dp),
+                modifier = Modifier
+                    .border(
+                        BorderStroke(1.dp, color = Color.Black),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(8.dp),
                 label = {
                     Text(it.text)
                 },
                 icon = {
-                    Icon(painter = painterResource(id =it.icon ) , contentDescription = it.text)
+                    Icon(painter = painterResource(id = it.icon), contentDescription = it.text)
                 },
                 colors =
-                NavigationDrawerItemDefaults.colors(unselectedContainerColor = Color.Transparent, selectedContainerColor =Color.Transparent ),
+                NavigationDrawerItemDefaults.colors(
+                    unselectedContainerColor = Color.Transparent,
+                    selectedContainerColor = Color.Transparent
+                ),
                 selected = selectedScreen == it,
                 onClick = {
                     onScreenSelected(it)
@@ -339,7 +346,7 @@ private val DrawerWidth = 300.dp
 
 private enum class ScreenDrawer(val text: String, val icon: Int) {
     Home("Home", R.drawable.home),
-    News("Metro",  R.drawable.metro ),
-    Metro("News", R.drawable.news )
+    News("Metro", R.drawable.metro),
+    Metro("News", R.drawable.news)
 
 }

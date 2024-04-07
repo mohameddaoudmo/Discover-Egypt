@@ -119,15 +119,17 @@ fun Header(scrollState: ScrollState ,ondrawerClick :()->Unit
                 AsyncImage(
                     model = bannersState[it].Image,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize().graphicsLayer {
-                        alpha = min(
-                            1f,
-                            max(
-                                0.0f,
-                                1 - (scrollState.value / ((height.value * 2) + (height.value / 1.5f)))
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer {
+                            alpha = min(
+                                1f,
+                                max(
+                                    0.0f,
+                                    1 - (scrollState.value / ((height.value * 2) + (height.value / 1.5f)))
+                                )
                             )
-                        )
-                    },
+                        },
 
                     contentDescription = null,
                 )

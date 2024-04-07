@@ -104,22 +104,8 @@ fun Cardcategories(modifier: Modifier = Modifier, place: String, city: String) {
                 contentDescription = null,
             )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    descriptionWithShader(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .height(20.dp), place = place, city
-                    )
-                } else {
 
-                    description(modifier = Modifier.align(Alignment.BottomCenter), place, city)
-                }
-            }
+            description(modifier = Modifier.align(Alignment.BottomCenter), place, city)
 
 
         }
@@ -274,10 +260,8 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
             .fillMaxWidth()
             .background(
                 Brush.radialGradient(
-                    listOf(
-                        Color(0x12FFFFFF), Color(0xDFFFFFF), Color(0x9FFFFFFF)
-
-                    ), radius = 900f, center = Offset.Infinite
+                    colors = listOf(Color.White, Color.White.copy(alpha = 0.0f)),
+                    radius = 200f
                 )
             )
 
@@ -286,7 +270,7 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
         Column {
             Text(
                 text = city,
-                color = Juicy,
+                color = Color.DarkGray,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = notosan, fontStyle = FontStyle.Normal
@@ -294,7 +278,7 @@ fun description(modifier: Modifier = Modifier, place: String, city: String) {
             Row() {
                 Text(
                     text = place,
-                    color = Juicy,
+                    color = Color.DarkGray,
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = firaSansFamily
